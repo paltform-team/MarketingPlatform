@@ -35,7 +35,7 @@
           </div>
         </div>
         <!--商品描述结束-->
-        <div class="option" @click="added"><img src="../../static/images/plus.png" alt=""></div>
+        <div class="option" @click="added"><img src="../assets/image/plus.png" alt=""></div>
       </div>
     </div>
   </div>
@@ -94,7 +94,7 @@
   .combination-marketing-wrap {
     width: 100%;
     height: calc(100% - 0.7rem);;
-    background: url("../../static/images/ab1.jpg") center no-repeat;
+    background: url("../assets/image/ab1.jpg") center no-repeat;
     color: #fff;
   }
 

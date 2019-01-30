@@ -1,10 +1,7 @@
 <template>
     <div class="main-container">
       <img class="bg-img" src="../assets/image/bg.jpg"/>
-<<<<<<< HEAD
       <div class="to-see-info">查看景点信息</div>
-=======
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
       <div class="search-wrapper">
         <input type="text" class="search-input" :class="{'show-input':showInput}" v-model="searchVal"/>
         <span class="search" @click="setSearchInput" ><span class="icon iconfont icon-sousuo"></span></span>
@@ -18,13 +15,10 @@
             <li>223</li>
             <li>333</li>
           </ul>
-<<<<<<< HEAD
         <span class="extend" @click="showLeft=!showLeft">
           <span class="icon iconfont " :class="showLeft?'icon-xiangzuo':'icon-xiangyou'"></span>
         </span>
-=======
         <span class="extend" @click="showLeft=!showLeft"></span>
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
       </div>
       <div class="right-nav">
         <ul class="icon-class">
@@ -50,10 +44,7 @@ export default {
       selectedOverlay:[],
       selectedOverlayPoint:[],
       overlayPointArr:[],
-<<<<<<< HEAD
       bg:require('../assets/image/bg.jpg'),
-=======
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
       infoImg: require('../assets/image/info-img.png'),
       infoTriangle: require('../assets/image/triangle.png'),
       iconclass:[
@@ -75,10 +66,6 @@ export default {
     //右侧选择类型
     selectLabel(item){
       if(item.show){
-<<<<<<< HEAD
-        item.show=!item.show
-=======
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
         this.markerAll[item.markername].forEach((mark)=>{
           if(mark.label.selected==false){
             map.removeOverlay(mark.marker);
@@ -86,8 +73,6 @@ export default {
           }
         })
       }else{
-<<<<<<< HEAD
-        item.show=!item.show
         this.markerAll[item.markername].forEach((mark)=>{
           if(mark.label.selected==false){
             mark.selected=true
@@ -95,26 +80,12 @@ export default {
           }
         })
       }
-
-=======
-        this.markerAll[item.markername].forEach((mark)=>{
-          if(mark.label.selected==false){
-            mark.selected=true
-            this.showMarker(mark.marker,mark.label,mark.markername,mark.selected,mark.img)
-          }
-        })
-      }
       item.show=!item.show
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
     },
     createMap(){
       let map = new BMap.Map("mapContainer");
       let point = new BMap.Point(120.210731,30.206723);
-<<<<<<< HEAD
       map.centerAndZoom(point, 14);
-=======
-      map.centerAndZoom(point, 15);
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
       window.map = map;
       this.map=map
       map.enableScrollWheelZoom();
@@ -223,11 +194,7 @@ export default {
           }
         },200)
     },
-<<<<<<< HEAD
-    showMarker(marker,label,markerName,selected,img,show){
-=======
     showMarker(marker,label,markerName,selected,img){
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
       let vm=this
       let startpoint,endpoint,searchRoute,driving
       let onPolylinesSet,onMarkersSet
@@ -248,121 +215,103 @@ export default {
           vm.markerAll[markerName].push({"marker":marker,'label':label,selected:selected,img:img})
         }
       let setLabel=function () {
-<<<<<<< HEAD
-
-=======
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
         //  label被选中
-        if(!label.selected){
-          label.V.getElementsByClassName('label')[0].style.background='#f00'
-          label.V.getElementsByClassName('label')[0].style.color='#fff'
+        if (!label.selected) {
+          label.V.getElementsByClassName('label')[0].style.background = '#f00'
+          label.V.getElementsByClassName('label')[0].style.color = '#fff'
           label.setStyle({
-            border:"none",
-            backgroundColor:"transparent",
+            border: "none",
+            backgroundColor: "transparent",
             transition: 'all .3s',
-            transform:'scale(1.1)'
+            transform: 'scale(1.1)'
           });
-          vm.lineLabel.push({marker,label,markerName,img})
-          if(vm.lineLabel.length>=2){
-            startpoint = new BMap.Point(vm.lineLabel[vm.lineLabel.length-2].label.point.lng, vm.lineLabel[vm.lineLabel.length-2].label.point.lat);
-            endpoint = new BMap.Point(vm.lineLabel[vm.lineLabel.length-1].label.point.lng, vm.lineLabel[vm.lineLabel.length-1].label.point.lat);
-<<<<<<< HEAD
-            driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: false},
-=======
-            driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true},
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
-              onPolylinesSet:function(routes) {
+          vm.lineLabel.push({marker, label, markerName, img})
+          if (vm.lineLabel.length >= 2) {
+            startpoint = new BMap.Point(vm.lineLabel[vm.lineLabel.length - 2].label.point.lng, vm.lineLabel[vm.lineLabel.length - 2].label.point.lat);
+            endpoint = new BMap.Point(vm.lineLabel[vm.lineLabel.length - 1].label.point.lng, vm.lineLabel[vm.lineLabel.length - 1].label.point.lat);
+            driving = new BMap.DrivingRoute(map, {
+              renderOptions: {map: map, autoViewport: false},
+              onPolylinesSet: function (routes) {
                 searchRoute = routes[0].getPolyline();//导航路线
                 map.addOverlay(searchRoute);
               },
-              onMarkersSet:function(routes) {
+              onMarkersSet: function (routes) {
                 map.removeOverlay(routes[0].marker); //删除起点
                 map.removeOverlay(routes[1].marker);//删除终点
-              }});
+              }
+            });
             driving.search(startpoint, endpoint);
           }
-          label.selected=!label.selected
+          label.selected = !label.selected
         }
         //  label被取消
-        else{
-          label.selected=!label.selected
+        else {
+          label.selected = !label.selected
           map.clearOverlays()
           //重新渲染点位
-          for(let key in vm.markerAll){
-<<<<<<< HEAD
-            console.log(vm.markerAll[key])
-=======
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
-            vm.markerAll[key].forEach((item)=>{
+          for (let key in vm.markerAll) {
+            vm.markerAll[key].forEach((item) => {
               item.marker.setLabel(item.label);
               map.addOverlay(item.marker);
-              if(item.selected==true){
-                item.label.V.getElementsByClassName('label')[0].style.background='#fff'
-                item.label.V.getElementsByClassName('label')[0].style.color='#000'
+              if (item.selected == true) {
+                item.label.V.getElementsByClassName('label')[0].style.background = '#fff'
+                item.label.V.getElementsByClassName('label')[0].style.color = '#000'
                 item.label.setStyle({
-                  border:"none",
-                  backgroundColor:"transparent",
+                  border: "none",
+                  backgroundColor: "transparent",
                   transition: 'all .3s',
-                  transform:'scale(1)'
+                  transform: 'scale(1)'
                 });
-                if(item.label.selected==true){
-                  item.label.V.getElementsByClassName('label')[0].style.background='#f00'
-                  item.label.V.getElementsByClassName('label')[0].style.color='#fff'
+                if (item.label.selected == true) {
+                  item.label.V.getElementsByClassName('label')[0].style.background = '#f00'
+                  item.label.V.getElementsByClassName('label')[0].style.color = '#fff'
                   item.label.setStyle({
-                    border:"none",
-                    backgroundColor:"transparent",
+                    border: "none",
+                    backgroundColor: "transparent",
                     transition: 'all .3s',
-                    transform:'scale(1.1)'
+                    transform: 'scale(1.1)'
                   });
                 }
               }
               //点位所在标签未被选择，清除
-              else{
+              else {
                 map.removeOverlay(item.marker);
               }
             })
           }
           //删除路线中被取消的点位
-          vm.lineLabel.forEach((item,index)=>{
-            if(label==item.label){
-              vm.lineLabel.splice(index,1)
+          vm.lineLabel.forEach((item, index) => {
+            if (label == item.label) {
+              vm.lineLabel.splice(index, 1)
             }
           })
           //重新渲染路线
-          vm.lineLabel.forEach((item,index)=>{
-            if(index>0){
+          vm.lineLabel.forEach((item, index) => {
+            if (index > 0) {
               startpoint = new BMap.Point(vm.lineLabel[index].label.point.lng, vm.lineLabel[index].label.point.lat);
-              endpoint = new BMap.Point(vm.lineLabel[index-1].label.point.lng, vm.lineLabel[index-1].label.point.lat);
-<<<<<<< HEAD
-              driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: false},
-=======
-              driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true},
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
-                onPolylinesSet:function(routes) {
+              endpoint = new BMap.Point(vm.lineLabel[index - 1].label.point.lng, vm.lineLabel[index - 1].label.point.lat);
+              driving = new BMap.DrivingRoute(map, {
+                renderOptions: {map: map, autoViewport: false},
+                onPolylinesSet: function (routes) {
                   searchRoute = routes[0].getPolyline();//导航路线
                   map.addOverlay(searchRoute);
                 },
-                onMarkersSet:function(routes) {
+                onMarkersSet: function (routes) {
                   map.removeOverlay(routes[0].marker); //删除起点
                   map.removeOverlay(routes[1].marker);//删除终点
-                }});
+                }
+              });
               driving.search(startpoint, endpoint);
             }
           })
         }
         //修改背景
-<<<<<<< HEAD
-        if(vm.lineLabel.length>0){
-          document.getElementsByClassName('bg-img')[0].setAttribute('src',vm.lineLabel[vm.lineLabel.length-1].img)
-        }else{
-          document.getElementsByClassName('bg-img')[0].setAttribute('src',vm.bg)
+        if (vm.lineLabel.length > 0) {
+          document.getElementsByClassName('bg-img')[0].setAttribute('src', vm.lineLabel[vm.lineLabel.length - 1].img)
+        } else {
+          document.getElementsByClassName('bg-img')[0].setAttribute('src', vm.bg)
         }
-
-=======
-        document.getElementsByClassName('bg-img')[0].setAttribute('src',vm.lineLabel[vm.lineLabel.length-1].img)
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
       }
-        // label.addEventListener('click',setLabel,false)
         label.onclick=setLabel
     },
     setMarker(markerArr,markerName){
@@ -384,11 +333,7 @@ export default {
           '        </div>\n' +
           '      </div>',{"offset":new BMap.Size(-50,-115)});
         label.selected=false
-<<<<<<< HEAD
-        this.showMarker(marker,label,markerName,false,json.img,false)
-=======
         this.showMarker(marker,label,markerName,false,json.img)
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
       }
     },
     createIcon(image){
@@ -445,7 +390,6 @@ export default {
     left: 0;
     right: 0;
   }
-<<<<<<< HEAD
   .to-see-info{
     position: absolute;
     top: 5%;
@@ -457,8 +401,6 @@ export default {
     font-size: .14rem;
     cursor: pointer;
   }
-=======
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
   .search-wrapper{
     position: absolute;
     right: 10%;
@@ -545,10 +487,7 @@ export default {
     right: -25px;
     top: 37%;
     height: 103px;
-<<<<<<< HEAD
     line-height: 103px;
-=======
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
     width: 25px;
     background: #fff;
     border-radius: 0 3px 3px 0;
@@ -594,15 +533,12 @@ export default {
   .icon-class li:nth-child(4){
     background: rgba(201,193,69,0.8);
   }
-<<<<<<< HEAD
   .select-icon{
     margin-left: -10px;
   }
-=======
   /*.select-icon{*/
     /*width: 50px;*/
   /*}*/
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
   .btn-wrapper{
     position: fixed;
     top: 16%;

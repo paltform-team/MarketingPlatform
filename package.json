@@ -13,10 +13,7 @@
     "axios": "^0.18.0",
     "vue": "^2.5.2",
     "vue-awesome-swiper": "^3.1.3",
-<<<<<<< HEAD
-=======
     "vue-baidu-map": "^0.21.16",
->>>>>>> 75a5ca3335432b32e1f1fcfad9e80541d90e5622
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
