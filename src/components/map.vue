@@ -250,34 +250,38 @@ export default {
           map.clearOverlays()
           //重新渲染点位
           for (let key in vm.markerAll) {
-            vm.markerAll[key].forEach((item) => {
-              item.marker.setLabel(item.label);
-              map.addOverlay(item.marker);
-              if (item.selected == true) {
-                item.label.V.getElementsByClassName('label')[0].style.background = '#fff'
-                item.label.V.getElementsByClassName('label')[0].style.color = '#000'
-                item.label.setStyle({
-                  border: "none",
-                  backgroundColor: "transparent",
-                  transition: 'all .3s',
-                  transform: 'scale(1)'
-                });
-                if (item.label.selected == true) {
-                  item.label.V.getElementsByClassName('label')[0].style.background = '#f00'
-                  item.label.V.getElementsByClassName('label')[0].style.color = '#fff'
+            console.log(vm.markerAll[key])
+            if(key!='undefined'){
+              vm.markerAll[key].forEach((item) => {
+                item.marker.setLabel(item.label);
+                map.addOverlay(item.marker);
+                if (item.selected == true) {
+                  item.label.V.getElementsByClassName('label')[0].style.background = '#fff'
+                  item.label.V.getElementsByClassName('label')[0].style.color = '#000'
                   item.label.setStyle({
                     border: "none",
                     backgroundColor: "transparent",
                     transition: 'all .3s',
-                    transform: 'scale(1.1)'
+                    transform: 'scale(1)'
                   });
+                  if (item.label.selected == true) {
+                    item.label.V.getElementsByClassName('label')[0].style.background = '#f00'
+                    item.label.V.getElementsByClassName('label')[0].style.color = '#fff'
+                    item.label.setStyle({
+                      border: "none",
+                      backgroundColor: "transparent",
+                      transition: 'all .3s',
+                      transform: 'scale(1.1)'
+                    });
+                  }
                 }
-              }
-              //点位所在标签未被选择，清除
-              else {
-                map.removeOverlay(item.marker);
-              }
-            })
+                //点位所在标签未被选择，清除
+                else {
+                  map.removeOverlay(item.marker);
+                }
+              })
+            }
+
           }
           //删除路线中被取消的点位
           vm.lineLabel.forEach((item, index) => {
