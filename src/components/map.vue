@@ -1,6 +1,7 @@
 <template>
     <div class="main-container">
       <img class="bg-img" src="../assets/image/bg.jpg"/>
+      <div class="to-see-info">查看景点信息</div>
       <div class="search-wrapper">
         <input type="text" class="search-input" :class="{'show-input':showInput}" v-model="searchVal"/>
         <span class="search" @click="setSearchInput" ><span class="icon iconfont icon-sousuo"></span></span>
@@ -14,7 +15,9 @@
             <li>223</li>
             <li>333</li>
           </ul>
-        <span class="extend" @click="showLeft=!showLeft"></span>
+        <span class="extend" @click="showLeft=!showLeft">
+          <span class="icon iconfont " :class="showLeft?'icon-xiangzuo':'icon-xiangyou'"></span>
+        </span>
       </div>
       <div class="right-nav">
         <ul class="icon-class">
@@ -40,6 +43,7 @@ export default {
       selectedOverlay:[],
       selectedOverlayPoint:[],
       overlayPointArr:[],
+      bg:require('../assets/image/bg.jpg'),
       infoImg: require('../assets/image/info-img.png'),
       infoTriangle: require('../assets/image/triangle.png'),
       iconclass:[
@@ -61,6 +65,7 @@ export default {
     //右侧选择类型
     selectLabel(item){
       if(item.show){
+        item.show=!item.show
         this.markerAll[item.markername].forEach((mark)=>{
           if(mark.label.selected==false){
             map.removeOverlay(mark.marker);
@@ -68,19 +73,20 @@ export default {
           }
         })
       }else{
+        item.show=!item.show
         this.markerAll[item.markername].forEach((mark)=>{
           if(mark.label.selected==false){
             mark.selected=true
-            this.showMarker(mark.marker,mark.label,mark.markername,mark.selected,mark.img)
+            this.showMarker(mark.marker,mark.label,mark.markername,mark.selected,mark.img,item.show)
           }
         })
       }
-      item.show=!item.show
+
     },
     createMap(){
       let map = new BMap.Map("mapContainer");
       let point = new BMap.Point(120.210731,30.206723);
-      map.centerAndZoom(point, 15);
+      map.centerAndZoom(point, 14);
       window.map = map;
       this.map=map
       map.enableScrollWheelZoom();
@@ -189,7 +195,7 @@ export default {
           }
         },200)
     },
-    showMarker(marker,label,markerName,selected,img){
+    showMarker(marker,label,markerName,selected,img,show){
       let vm=this
       let startpoint,endpoint,searchRoute,driving
       let onPolylinesSet,onMarkersSet
@@ -210,6 +216,7 @@ export default {
           vm.markerAll[markerName].push({"marker":marker,'label':label,selected:selected,img:img})
         }
       let setLabel=function () {
+
         //  label被选中
         if(!label.selected){
           label.V.getElementsByClassName('label')[0].style.background='#f00'
@@ -224,7 +231,7 @@ export default {
           if(vm.lineLabel.length>=2){
             startpoint = new BMap.Point(vm.lineLabel[vm.lineLabel.length-2].label.point.lng, vm.lineLabel[vm.lineLabel.length-2].label.point.lat);
             endpoint = new BMap.Point(vm.lineLabel[vm.lineLabel.length-1].label.point.lng, vm.lineLabel[vm.lineLabel.length-1].label.point.lat);
-            driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true},
+            driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: false},
               onPolylinesSet:function(routes) {
                 searchRoute = routes[0].getPolyline();//导航路线
                 map.addOverlay(searchRoute);
@@ -243,6 +250,7 @@ export default {
           map.clearOverlays()
           //重新渲染点位
           for(let key in vm.markerAll){
+            console.log(vm.markerAll[key])
             vm.markerAll[key].forEach((item)=>{
               item.marker.setLabel(item.label);
               map.addOverlay(item.marker);
@@ -283,7 +291,7 @@ export default {
             if(index>0){
               startpoint = new BMap.Point(vm.lineLabel[index].label.point.lng, vm.lineLabel[index].label.point.lat);
               endpoint = new BMap.Point(vm.lineLabel[index-1].label.point.lng, vm.lineLabel[index-1].label.point.lat);
-              driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true},
+              driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: false},
                 onPolylinesSet:function(routes) {
                   searchRoute = routes[0].getPolyline();//导航路线
                   map.addOverlay(searchRoute);
@@ -297,7 +305,12 @@ export default {
           })
         }
         //修改背景
-        document.getElementsByClassName('bg-img')[0].setAttribute('src',vm.lineLabel[vm.lineLabel.length-1].img)
+        if(vm.lineLabel.length>0){
+          document.getElementsByClassName('bg-img')[0].setAttribute('src',vm.lineLabel[vm.lineLabel.length-1].img)
+        }else{
+          document.getElementsByClassName('bg-img')[0].setAttribute('src',vm.bg)
+        }
+
       }
         // label.addEventListener('click',setLabel,false)
         label.onclick=setLabel
@@ -321,7 +334,7 @@ export default {
           '        </div>\n' +
           '      </div>',{"offset":new BMap.Size(-50,-115)});
         label.selected=false
-        this.showMarker(marker,label,markerName,false,json.img)
+        this.showMarker(marker,label,markerName,false,json.img,false)
       }
     },
     createIcon(image){
@@ -377,6 +390,17 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
+  }
+  .to-see-info{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    background: #fff;
+    border-radius: 5px;
+    padding: 5px 9px;
+    box-shadow: 0 0 5px rgba(255,255,255,1);
+    font-size: .14rem;
+    cursor: pointer;
   }
   .search-wrapper{
     position: absolute;
@@ -464,6 +488,7 @@ export default {
     right: -25px;
     top: 37%;
     height: 103px;
+    line-height: 103px;
     width: 25px;
     background: #fff;
     border-radius: 0 3px 3px 0;
@@ -509,9 +534,9 @@ export default {
   .icon-class li:nth-child(4){
     background: rgba(201,193,69,0.8);
   }
-  /*.select-icon{*/
-    /*width: 50px;*/
-  /*}*/
+  .select-icon{
+    margin-left: -10px;
+  }
   .btn-wrapper{
     position: fixed;
     top: 16%;
